@@ -45,16 +45,18 @@
 #}
 
 {% macro normalize_priority(col) %}
-    -- TODO(nhiệm vụ 3): thay biểu thức dưới đây bằng một khối CASE xử lý
-    -- đủ ba nhóm ở trên.
-    --
-    --     case
-    --         when <nhóm 1: đã là số hợp lệ>  then <giữ nguyên>
-    --         when <nhóm 2: nhãn chữ>         then <số tương ứng>
-    --         ...
-    --         else null                        -- nhóm 3
-    --     end
-    try_cast({{ col }} as integer)
+    -- Nhiệm vụ 3: xử lý ba nhóm giá trị priority_raw
+    case
+        -- Nhóm 1: số hợp lệ 1..4
+        when {{ col }} in ('1', '2', '3', '4') then cast({{ col }} as integer)
+        -- Nhóm 2: nhãn chuỗi — schema evolution, map về số
+        when lower({{ col }}) = 'urgent' then 1
+        when lower({{ col }}) = 'high'   then 2
+        when lower({{ col }}) = 'medium' then 3
+        when lower({{ col }}) = 'low'    then 4
+        -- Nhóm 3: mọi thứ khác (P1, unknown, 0, 5, -1, '', NULL) → NULL
+        else null
+    end
 {% endmacro %}
 
 
