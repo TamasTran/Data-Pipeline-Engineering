@@ -1,4 +1,4 @@
-# LAB 17 — Data Pipeline Engineering
+# Data-Pipeline-Engineering-Lab
 
 **AICB-P2T2 · Ngày 17 · Chương 4: Hạ Tầng**
 
